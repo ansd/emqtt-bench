@@ -498,6 +498,8 @@ run(Parent, PubSub, Opts, AddrList, HostList) ->
 run(_Parent, 0, _PubSub, Opts, _AddrList, _HostList) ->
     case proplists:get_value(publish_signal_pid, Opts) of
         Pid when is_pid(Pid) ->
+            %% Wait until last connection had the chance to monitor Pid
+            timer:sleep(2000),
             Pid ! go;
         _ ->
             ok
